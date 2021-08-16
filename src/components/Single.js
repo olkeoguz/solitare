@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
   single: {
     borderRadius: 12,
     cursor: 'pointer',
+    marginTop:-50
   },
 }));
 
