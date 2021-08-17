@@ -1,8 +1,8 @@
 import { Grid } from '@material-ui/core';
-import React, { useState } from 'react';
+import React from 'react';
 import Single from './Single';
 import { makeStyles } from '@material-ui/core';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { useDrop } from 'react-dnd';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -10,70 +10,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PlayingCard = ({ card }) => {
-  const [cards, setCards] = useState(card);
+const PlayingCard = ({ card, addToAnotherColumn, index }) => {
   const classes = useStyles();
 
-  const handleOnDragEnd = (result) => {
-    console.log(result);
-    if (!result.destination) return;
-    const items = Array.from(cards);
-    // if(result.source.index !== items.length - 1) return;
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-    setCards(items);
-  };
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: 'image',
+    drop: (item) => {
+      addToAnotherColumn(item.single, item.rowIndex, item.columnIndex, index);
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
 
   return (
     <Grid item style={{ margin: '10px' }}>
-      <DragDropContext onDragEnd={handleOnDragEnd}>
-        <Droppable droppableId='cards'>
-          {(provided) => (
-            <Grid
-              container
-              direction='column'
-              className={classes.container}
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {cards.map((single, index) => (
-                <Draggable
-                  key={single.id}
-                  draggableId={single.id}
-                  index={index}
-                >
-                  {(provided) => (
-                    <Grid
-                      item
-                      {...provided.draggableProps}
-                      ref={provided.innerRef}
-                      {...provided.dragHandleProps}
-                    >
-                      <Single single={single} />
-                    </Grid>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </Grid>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <Grid
+        container
+        direction='column'
+        className={classes.container}
+        ref={drop}
+      >
+        {card.map((single, idx) => (
+          <Grid item key={single.id}>
+            <Single
+              single={single}
+              rowIndex={index}
+              columnIndex={idx}
+              length={card.length}
+            />
+          </Grid>
+        ))}
+      </Grid>
     </Grid>
   );
 };
 
 export default PlayingCard;
-
-/* <Grid item style={{ margin: '10px' }}>
-      <Grid container direction='column' className={classes.container}>
-        {card.map((single) => (
-          <Grid
-            item
-            key={single.id}
-          >
-            <Single single={single} />
-          </Grid>
-        ))}
-      </Grid>
-    </Grid> */

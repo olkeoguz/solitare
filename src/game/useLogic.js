@@ -86,7 +86,7 @@ const checkMove = (evt) => {
   return evt.draggedContext.element.showFront;
 };
 
-const dealFloorCards = () => {
+export const dealFloorCards = () => {
   for (let i = 0; i < 10; i++) {
     const card = floorCards.shift();
     card.showFront = true;
