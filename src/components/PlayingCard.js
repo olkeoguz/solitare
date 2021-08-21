@@ -1,19 +1,11 @@
 import { Grid } from '@material-ui/core';
 import React, { useContext } from 'react';
 import Single from './Single';
-import { makeStyles } from '@material-ui/core';
 import { useDrop } from 'react-dnd';
 import PlaceHolder from './PlaceHolder';
 import { GameContext } from '../context/GameContext';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    position: 'relative',
-  },
-}));
-
 const PlayingCard = ({ chunk, chunkIndex }) => {
-  const classes = useStyles();
   const { addCardToBoard} = useContext(GameContext);
 
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
@@ -52,7 +44,6 @@ const PlayingCard = ({ chunk, chunkIndex }) => {
       {chunk.length > 0 ? <Grid
         container
         direction='column'
-        className={classes.container}
         ref={drop}
       >
         {chunk.map((card, cardIndex) => (
@@ -70,10 +61,9 @@ const PlayingCard = ({ chunk, chunkIndex }) => {
         <Grid
           container
           direction='column'
-          className={classes.container}
           ref={drop}
         >
-          <PlaceHolder />
+          <PlaceHolder empty />
         </Grid>}
     </Grid>
   );

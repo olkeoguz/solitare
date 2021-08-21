@@ -1,50 +1,7 @@
 import React from 'react';
 import spadesBack from '../assets/spades-back.png';
-import { makeStyles } from '@material-ui/core';
 import { useDrag } from 'react-dnd';
-
-const useStyles = makeStyles((theme) => ({
-  card: {
-    borderRadius: 12,
-    marginTop: -120,
-    width: '100%',
-    zIndex: (cardIndex) => {
-      return cardIndex;
-    },
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '120%',
-    },
-    [theme.breakpoints.down('xs')]: {
-      width: '140%',
-    },
-  },
-  showFront: {
-    width:100,
-    borderRadius: 12,
-    cursor: 'pointer',
-    transition: 'transform 0.2s ease-in-out',
-    marginTop: -110,
-    '&:hover': {
-      transform: 'scale(1.1)',
-    },
-    zIndex: (cardIndex) => {
-      return cardIndex;
-    },
-    overflow: 'hidden',
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '120%',
-    },
-    [theme.breakpoints.down('xs')]: {
-      width: '140%',
-    },
-  },
-}));
+import { useStyles } from './styles/styles.Single';
 
 const Single = ({ card, click, chunkIndex, cardIndex, isDraggable }) => {
   const classes = useStyles(cardIndex);
